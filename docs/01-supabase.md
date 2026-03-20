@@ -36,7 +36,7 @@ All subsequent commands should be run as the `api` user unless specified otherwi
 
 ---
 
-## 2 Install Docker and Docker Compose
+## 2 Install Docker
 You can follow the official Docker docs here: https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository
 
 Update system packages:

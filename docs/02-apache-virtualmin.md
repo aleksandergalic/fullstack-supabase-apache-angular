@@ -197,28 +197,48 @@ You’ll also want to avoid logging into this account over an unsecured wireless
 Now, we can connect to the proxy. I recommend connecting to the proxy with the extension FoxyProxy in Firefox browser. If you can't connect to the proxy, check if your router firewall is blocking the port 1080.
 
 
-## 2. Create Domain in Virtualmin
+## 2. Create domain and subdomains in Virtualmin
+We will split the services to these subdomains:
+- mydomain.com (Marketing/presentation website,)
+    - app.mydomain.com (Actual app)
+    - api.mydomain.com (for Supabase APIs)
+    - dashboard.mydomain.com (For the Supabase Studio dashboard)
 
-1. Log into Virtualmin web interface (usually at `https://your-server-ip:10000`)
+
+### Main domain:
+1. Log into Virtualmin web interface (usually at `https://your-server-ip:10000` Or `https://localhost:10000` if you have Dante proxy enabled)
 2. Click **Create Virtual Server**
 3. Configure:
-   - **Domain name**: `supabase.example.com`
+   - **Domain name**: `mydomain.com`
+   - **Administration username**: any name
+   - **Administration password**: (set a password)
+4. **Enable**:
+   - ✅ Apache website
+   - ✅ SSL website (via Let's Encrypt)
+   - ✅ MariaDB (for a CMS like Wordpress)
+5. Click **Create Server**
+6. Go to **Manage Web Apps** --> **Available Web Apps**
+7. Select **Wordpress**, scroll down and select **Install Options**
+8. At **Install sub-directory under public_html**, select `At top level`. This will install Wordpress in the top folder (public_html).
+
+
+Wait for Virtualmin to create the virtual server.
+
+### Subdomains:
+1. Click **Create Virtual Sub-Server**
+3. Configure:
+   - **Domain name**: `app.example.com`
    - **Administration username**: `supabase` (or any name)
    - **Administration password**: (set a password)
 4. **Enable**:
    - ✅ Apache website
    - ✅ SSL website (via Let's Encrypt)
-5. **Disable**:
-   - ❌ MySQL database
-   - ❌ PostgreSQL database
-   - ❌ Mail for domain
 6. Click **Create Server**
 
-Wait for Virtualmin to create the virtual server.
-
+Also do this for api.mydomain.com and dashboard.mydomain.com
 ---
 
-## 1️⃣1️⃣ Enable Apache Proxy Modules
+## 2.1 Enable Apache Proxy Modules
 
 Enable required Apache modules:
 
@@ -243,7 +263,13 @@ proxy_wstunnel_module (shared)
 ---
 
 ## 1️⃣2️⃣ Configure Apache Reverse Proxy
-
+You're gonna need to configure proxies like this:
+```
+mydomain.com --> No proxy
+├─ app.mydomain.com --> 
+├─ api.mydomain.com -->
+├─ dashboard.mydomain.com --> http://127.0.0.1:8000/
+```
 ### Method 1: Using Virtualmin GUI (Recommended)
 
 1. In Virtualmin, select your domain (`supabase.example.com`)
