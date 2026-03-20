@@ -43,17 +43,6 @@ To get started with the project, follow these detailed guides in order:
 - OS: Ubuntu 24.04 LTS (fresh installation recommended)
 - Hardware: Minimum 4 GB RAM, 2 CPU cores
 
-## :compass: Roadmap
-
-* [ ] fail2ban configuration
-* [ ] automated CI/CD pipeline
-
-
-## :wave: Contributing
-
-Contributions are always welcome! See `contributing.md` for ways to get started.
-
 ## :gem: Acknowledgements
 
-- [pwgen]()
-- [Dante proxy server]()
+- [maksimiljan-bizjak]()
